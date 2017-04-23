@@ -60,15 +60,17 @@ rails_command 'db:migrate'
 
 rails_command 'generate bootstrap:themed blogs -f'
 
-
-file '.pryrc', <<-CODE
+file '.pryrc', <<-FOR_AWESOMEPRINT
+  # setup for awesomeprint
   begin
     require 'awesome_print'
     AwesomePrint.pry!
   rescue LoadError
     puts 'no awesome_print :('
   end
+FOR_AWESOMEPRINT
 
+append_to_file '.pryrc', <<-FOR_HIRB
   # setup for hirb
   begin
     require 'hirb'
@@ -95,4 +97,4 @@ file '.pryrc', <<-CODE
 
     Hirb.enable
   end
-CODE
+FOR_HIRB
