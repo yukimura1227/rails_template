@@ -16,6 +16,7 @@ gem_group :development do
   gem 'erb2haml'
   gem 'hirb'         # モデルの出力結果を表形式で表示するGem
   gem 'hirb-unicode' # 日本語などマルチバイト文字の出力時の出力結果のずれに対応
+  gem 'pry-coolline'
 end
 
 run 'bundle install'
