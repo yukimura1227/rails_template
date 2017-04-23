@@ -21,5 +21,7 @@ run 'bundle install'
 generate(:scaffold, "blog", "title:string", "content:text")
 
 rails_command "db:migrate"
-
 rails_command 'haml:replace_erbs'
+
+rails_command 'generate bootstrap:install'
+rails_command 'generate bootstrap:layout application fluid -f'
