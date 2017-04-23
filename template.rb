@@ -12,6 +12,8 @@ gem_group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'awesome_print'
+  gem 'rspec-rails'
+  gem 'rails-controller-testing'
 end
 
 gem_group :development do
@@ -25,8 +27,26 @@ run 'bundle install'
 
 rails_command 'haml:replace_erbs'
 
+rails_command 'generate rspec:install'
+run 'rm -rf test'
+
 rails_command 'generate bootstrap:install'
 rails_command 'generate bootstrap:layout application fluid -f'
+
+# set confing/application.rb
+application do
+  %q{
+    config.generators do |g|
+      g.test_framework :rspec,
+      fixtures: true,
+      view_specs: false,
+      helper_specs: false,
+      routing_specs: false,
+      controller_specs: true,
+      request_specs: false
+    end
+  }
+end
 
 generate(:scaffold, "blog", "title:string", "content:text")
 rails_command "db:migrate"
