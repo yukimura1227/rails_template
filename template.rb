@@ -6,6 +6,7 @@ gem_group :development, :test do
   gem 'awesome_print'
 end
 
+run 'bundle install'
 generate(:scaffold, "blog", "title:string", "content:text")
 
 rails_command "db:migrate"
