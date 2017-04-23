@@ -1,7 +1,7 @@
 gem 'haml-rails'
 
 gem "therubyracer"
-gem "less-rails"
+gem 'less-rails', git: 'https://github.com/MustafaZain/less-rails' # avoid duprecation error see https://github.com/metaskills/less-rails/issues/122
 gem "twitter-bootstrap-rails"
 
 gem 'draper' , '>= 3.0.0.pre1' # 3.0.0.pre1 is avoid error -> active_model/serializers/xml (LoadError)
