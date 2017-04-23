@@ -28,3 +28,12 @@ rails_command "db:migrate"
 
 rails_command 'generate bootstrap:themed blogs -f'
 
+
+file '.pryrc', <<-CODE
+  begin
+    require 'awesome_print'
+    AwesomePrint.pry!
+  rescue LoadError
+    puts 'no awesome_print :('
+  end
+CODE
