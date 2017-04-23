@@ -29,6 +29,8 @@ rails_command 'haml:replace_erbs'
 
 rails_command 'generate rspec:install'
 run 'rm -rf test'
+run 'bundle binstubs rspec-core'
+
 
 rails_command 'generate bootstrap:install'
 rails_command 'generate bootstrap:layout application fluid -f'
