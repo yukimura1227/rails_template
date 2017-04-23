@@ -31,6 +31,9 @@ rails_command 'haml:replace_erbs'
 rails_command 'generate rspec:install'
 run 'rm -rf test'
 run 'bundle binstubs rspec-core'
+append_to_file '.rspec', <<-CODE
+  --format documentation
+CODE
 
 
 rails_command 'generate bootstrap:install'
