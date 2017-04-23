@@ -14,6 +14,7 @@ gem_group :development, :test do
   gem 'awesome_print'
   gem 'rspec-rails'
   gem 'rails-controller-testing'
+  gem 'factory_girl_rails'
 end
 
 gem_group :development do
@@ -46,6 +47,7 @@ application do
       routing_specs: false,
       controller_specs: true,
       request_specs: false
+      g.fixture_replacement :factory_girl, dir: 'spec/factories'
     end
   }
 end
