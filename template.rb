@@ -7,3 +7,5 @@ gem_group :development, :test do
 end
 
 generate(:scaffold, "blog", "title:string", "content:text")
+
+rails_command "db:migrate"
