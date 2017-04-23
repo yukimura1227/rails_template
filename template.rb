@@ -1,3 +1,4 @@
+gem 'haml-rails'
 gem_group :development, :test do
   gem 'pry-rails'
   gem 'pry-doc'
@@ -7,6 +8,9 @@ gem_group :development, :test do
 end
 
 run 'bundle install'
+
 generate(:scaffold, "blog", "title:string", "content:text")
 
 rails_command "db:migrate"
+
+rails_command 'haml:erb2haml'
