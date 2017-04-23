@@ -5,3 +5,5 @@ gem_group :development, :test do
   gem 'binding_of_caller'
   gem 'awesome_print'
 end
+
+generate(:scaffold, "blog", "title:string", "content:text")
