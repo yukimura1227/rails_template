@@ -1,8 +1,8 @@
 gem 'haml-rails'
 
-gem "therubyracer"
+gem 'therubyracer'
 gem 'less-rails', git: 'https://github.com/MustafaZain/less-rails' # avoid duprecation error see https://github.com/metaskills/less-rails/issues/122
-gem "twitter-bootstrap-rails"
+gem 'twitter-bootstrap-rails'
 
 gem 'draper' , '>= 3.0.0.pre1' # 3.0.0.pre1 is avoid error -> active_model/serializers/xml (LoadError)
 
@@ -55,8 +55,8 @@ application do
   }
 end
 
-generate(:scaffold, "blog", "title:string", "content:text")
-rails_command "db:migrate"
+generate(:scaffold, 'blog', 'title:string', 'content:text')
+rails_command 'db:migrate'
 
 rails_command 'generate bootstrap:themed blogs -f'
 
@@ -71,9 +71,9 @@ file '.pryrc', <<-CODE
 
   # setup for hirb
   begin
-    require "hirb"
+    require 'hirb'
   rescue LoadError
-    puts "no hirb :("
+    puts 'no hirb :('
   end
 
   if defined? Hirb
