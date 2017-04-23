@@ -1,4 +1,9 @@
 gem 'haml-rails'
+
+gem "therubyracer"
+gem "less-rails"
+gem "twitter-bootstrap-rails"
+
 gem_group :development, :test do
   gem 'pry-rails'
   gem 'pry-doc'
