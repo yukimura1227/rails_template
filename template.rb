@@ -23,6 +23,7 @@ gem_group :development do
   gem 'hirb-unicode' # 日本語などマルチバイト文字の出力時の出力結果のずれに対応
   gem 'pry-coolline'
   gem 'rubocop', require: false
+  gem 'view_source_map'
 end
 
 run 'bundle install'
