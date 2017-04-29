@@ -100,4 +100,4 @@ append_to_file '.pryrc', <<-FOR_HIRB
   end
 FOR_HIRB
 
-# TODO: capybara, poltergyst, bullet, Guard,
+# TODO: capybara, poltergyst, bullet, Guard, timecop, viewsourcemap, mailcatcher
