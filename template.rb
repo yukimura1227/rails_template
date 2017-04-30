@@ -4,7 +4,7 @@ gem 'therubyracer'
 gem 'less-rails', git: 'https://github.com/MustafaZain/less-rails' # avoid duprecation error see https://github.com/metaskills/less-rails/issues/122
 gem 'twitter-bootstrap-rails'
 
-gem 'draper' , '>= 3.0.0.pre1' # 3.0.0.pre1 is avoid error -> active_model/serializers/xml (LoadError)
+gem 'draper', '>= 3.0.0.pre1' # 3.0.0.pre1 is avoid error -> active_model/serializers/xml (LoadError)
 
 gem_group :development, :test do
   gem 'pry-rails'
@@ -42,13 +42,12 @@ append_to_file '.rspec', <<-CODE
   --format documentation
 CODE
 
-
 rails_command 'generate bootstrap:install'
 rails_command 'generate bootstrap:layout application fluid -f'
 
 # set confing/application.rb
 application do
-  %q{
+  %(
     config.generators do |g|
       g.test_framework :rspec,
       fixtures: true,
@@ -59,7 +58,8 @@ application do
       request_specs: false
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
     end
-  }
+  )
+end
 
 application(nil, env: 'development') do
   %(
