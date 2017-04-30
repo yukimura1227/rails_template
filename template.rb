@@ -67,8 +67,9 @@ application(nil, env: 'development') do
     config.after_initialize do
       Bullet.enable = true
       Bullet.bullet_logger = false
-      Bullet.console = true
+      Bullet.console = false
       Bullet.add_footer = false
+      Bullet.rails_logger = true
     end
   )
 end
@@ -121,4 +122,4 @@ if defined? Hirb
 end
 FOR_HIRB
 
-# TODO: capybara, poltergyst, bullet, Guard, timecop, mailcatcher
+# TODO: capybara, poltergyst, Guard, timecop, mailcatcher
