@@ -29,6 +29,8 @@ end
 
 gem_group :test do
   gem 'faker'
+  gem 'capybara'
+  gem 'poltergeist'
 end
 
 run 'bundle install'
@@ -77,9 +79,28 @@ rails_command 'db:migrate'
 
 rails_command 'generate bootstrap:themed blogs -f'
 
+insert_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
+  "require 'capybara/poltergeist'\n"
+end
+
+insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
+  "  Capybara.javascript_driver = :poltergeist\n"
+end
+
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
   "  config.include FactoryGirl::Syntax::Methods\n"
 end
+
+file 'spec/features/blogs_spec.rb', <<-SAMPLE_FEATURE_SPEC
+require 'rails_helper'
+
+feature 'blogs' do
+  scenario 'can show blogs', js: true do
+    visit blogs_path
+    expect(page).to have_content 'Blogs'
+  end
+end
+SAMPLE_FEATURE_SPEC
 
 file '.pryrc', <<-FOR_AWESOMEPRINT
 # setup for awesomeprint
@@ -120,4 +141,4 @@ if defined? Hirb
 end
 FOR_HIRB
 
-# TODO: capybara, poltergyst, Guard, timecop, mailcatcher
+# TODO: database_cleaner, Guard, timecop, mailcatcher
