@@ -66,6 +66,10 @@ rails_command 'db:migrate'
 
 rails_command 'generate bootstrap:themed blogs -f'
 
+insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
+  "  config.include FactoryGirl::Syntax::Methods\n"
+end
+
 file '.pryrc', <<-FOR_AWESOMEPRINT
   # setup for awesomeprint
   begin
