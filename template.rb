@@ -26,6 +26,10 @@ gem_group :development do
   gem 'view_source_map'
 end
 
+gem_group :test do
+  gem 'faker'
+end
+
 run 'bundle install'
 
 rails_command 'haml:replace_erbs'
