@@ -47,7 +47,7 @@ rails_command 'generate bootstrap:layout application fluid -f'
 
 # set confing/application.rb
 application do
-  %(
+  %(# generators settings
     config.generators do |g|
       g.test_framework :rspec,
       fixtures: true,
@@ -57,24 +57,22 @@ application do
       controller_specs: true,
       request_specs: false
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
-    end
-  )
+    end)
 end
 
 application(nil, env: 'development') do
-  %(
-    # bullet settings
+  %(  # bullet settings
     config.after_initialize do
       Bullet.enable = true
       Bullet.bullet_logger = false
       Bullet.console = false
       Bullet.add_footer = false
       Bullet.rails_logger = true
-    end
-  )
+    end)
 end
 
 generate(:scaffold, 'blog', 'title:string', 'content:text')
+generate(:scaffold, 'comment', 'content:text', 'blog:references')
 rails_command 'db:migrate'
 
 rails_command 'generate bootstrap:themed blogs -f'
