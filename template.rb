@@ -24,6 +24,7 @@ gem_group :development do
   gem 'pry-coolline'
   gem 'rubocop', require: false
   gem 'view_source_map'
+  gem 'bullet'
 end
 
 gem_group :test do
@@ -59,6 +60,17 @@ application do
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
     end
   }
+
+application(nil, env: 'development') do
+  %(
+    # bullet settings
+    config.after_initialize do
+      Bullet.enable = true
+      Bullet.bullet_logger = false
+      Bullet.console = true
+      Bullet.add_footer = false
+    end
+  )
 end
 
 generate(:scaffold, 'blog', 'title:string', 'content:text')
