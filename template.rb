@@ -9,6 +9,7 @@ gem 'draper', '>= 3.0.0.pre1' # 3.0.0.pre1 is avoid error -> active_model/serial
 gem_group :development, :test do
   gem 'pry-rails'
   gem 'pry-doc'
+  gem 'pry-byebug'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'awesome_print'
