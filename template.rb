@@ -80,6 +80,7 @@ rails_command 'db:migrate'
 
 rails_command 'generate bootstrap:themed blogs -f'
 
+gsub_file 'spec/rails_helper.rb', 'config.use_transactional_fixtures = true', 'config.use_transactional_fixtures = false'
 insert_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
   "require 'capybara/poltergeist'\n"
 end
@@ -92,6 +93,12 @@ insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" 
   "  config.include FactoryGirl::Syntax::Methods\n"
 end
 
+append_to_file 'spec/rails_helper.rb', <<-SPEC_UTILITY
+# save screenshot
+def take_screenshot
+  page.save_screenshot "tmp/capybara/screenshot-\#{DateTime.now}.png"
+end
+SPEC_UTILITY
 file 'spec/features/blogs_spec.rb', <<-SAMPLE_FEATURE_SPEC
 require 'rails_helper'
 
@@ -99,6 +106,13 @@ feature 'blogs' do
   scenario 'can show blogs', js: true do
     visit blogs_path
     expect(page).to have_content 'Blogs'
+  end
+  scenario 'can create blogs', js: true do
+    visit blogs_path
+    click_on 'New'
+    fill_in 'Title', with: 'dummy title'
+    fill_in 'Content', with: 'dummy content'
+    expect { click_on 'Create Blog' }.to change(Blog, :count).by(1)
   end
 end
 SAMPLE_FEATURE_SPEC
