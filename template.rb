@@ -5,6 +5,7 @@ gem 'less-rails', git: 'https://github.com/MustafaZain/less-rails' # avoid dupre
 gem 'twitter-bootstrap-rails'
 
 gem 'draper', '>= 3.0.0.pre1' # 3.0.0.pre1 is avoid error -> active_model/serializers/xml (LoadError)
+gem 'font-awesome-rails'
 
 gem_group :development, :test do
   gem 'pry-rails'
@@ -143,12 +144,19 @@ insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" 
   "  config.include FactoryGirl::Syntax::Methods\n"
 end
 
+append_to_file 'app/assets/stylesheets/application.css', <<-SETTING_FONT_AWESOME_RAILS
+/*
+ *= require font-awesome
+ */
+SETTING_FONT_AWESOME_RAILS
+
 append_to_file 'spec/rails_helper.rb', <<-SPEC_UTILITY
 # save screenshot
 def take_screenshot
   page.save_screenshot "tmp/capybara/screenshot-\#{DateTime.now}.png"
 end
 SPEC_UTILITY
+
 file 'spec/features/blogs_spec.rb', <<-SAMPLE_FEATURE_SPEC
 require 'rails_helper'
 
