@@ -32,6 +32,7 @@ gem_group :test do
   gem 'faker'
   gem 'capybara'
   gem 'poltergeist'
+  gem 'database_cleaner'
 end
 
 run 'bundle install'
@@ -81,6 +82,55 @@ rails_command 'db:migrate'
 rails_command 'generate bootstrap:themed blogs -f'
 
 gsub_file 'spec/rails_helper.rb', 'config.use_transactional_fixtures = true', 'config.use_transactional_fixtures = false'
+insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
+  %( # setting for database_cleaner
+  config.before(:suite) do
+    if config.use_transactional_fixtures?
+      raise(<<-MSG)
+        Delete line `config.use_transactional_fixtures = true` from rails_helper.rb
+        (or set it to false) to prevent uncommitted transactions being used in
+        JavaScript-dependent specs.
+
+        During testing, the app-under-test that the browser driver connects to
+        uses a different database connection to the database connection used by
+        the spec. The app's database connection would not be able to access
+        uncommitted transaction data setup over the spec's database connection.
+      MSG
+    end
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, type: :feature) do
+    # :rack_test driver's Rack app under test shares database connection
+    # with the specs, so continue to use transaction strategy for speed.
+    driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
+
+    if !driver_shares_db_connection_with_specs
+      # Driver is probably for an external browser with an app
+      # under test that does *not* share a database connection with the
+      # specs, so use truncation strategy.
+      DatabaseCleaner.strategy = :truncation
+    end
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.append_after(:each) do
+    DatabaseCleaner.clean
+  end
+)
+end
+
+insert_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
+  "require 'capybara/rspec'\n"
+end
+
 insert_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
   "require 'capybara/poltergeist'\n"
 end
@@ -113,6 +163,19 @@ feature 'blogs' do
     fill_in 'Title', with: 'dummy title'
     fill_in 'Content', with: 'dummy content'
     expect { click_on 'Create Blog' }.to change(Blog, :count).by(1)
+  end
+  scenario 'can create blogs twice', js: true do
+    visit blogs_path
+    click_on 'New'
+    fill_in 'Title', with: 'dummy title'
+    fill_in 'Content', with: 'dummy content'
+    expect { click_on 'Create Blog' }.to change(Blog, :count).by(1)
+    visit blogs_path
+    click_on 'New'
+    fill_in 'Title', with: 'dummy title2'
+    fill_in 'Content', with: 'dummy content2'
+    expect { click_on 'Create Blog' }.to change(Blog, :count).by(1)
+    expect(Blog.count).to eq 2
   end
 end
 SAMPLE_FEATURE_SPEC
