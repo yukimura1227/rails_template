@@ -219,4 +219,4 @@ if defined? Hirb
 end
 FOR_HIRB
 
-# TODO: database_cleaner, Guard, timecop, mailcatcher
+# TODO: Guard, timecop, mailcatcher
