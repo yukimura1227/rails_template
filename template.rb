@@ -17,6 +17,7 @@ gem_group :development, :test do
   gem 'rspec-rails'
   gem 'rails-controller-testing'
   gem 'factory_girl_rails'
+  gem 'guard-rspec', require: false
 end
 
 gem_group :development do
@@ -47,6 +48,8 @@ run 'bundle binstubs rspec-core'
 append_to_file '.rspec', <<-CODE
   --format documentation
 CODE
+
+run 'bundle exec guard init rspec'
 
 rails_command 'generate bootstrap:install'
 rails_command 'generate bootstrap:layout application fluid -f'
@@ -260,4 +263,4 @@ if defined? Hirb
 end
 FOR_HIRB
 
-# TODO: Guard, mailcatcher
+# TODO: mailcatcher
