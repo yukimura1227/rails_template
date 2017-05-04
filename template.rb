@@ -150,6 +150,10 @@ append_to_file 'app/assets/stylesheets/application.css', <<-SETTING_FONT_AWESOME
  */
 SETTING_FONT_AWESOME_RAILS
 
+append_to_file 'app/views/blogs/index.html.haml', <<-USING_FONT_AWESOME_SAMPLE_CODE
+= fa_icon 'twitter'
+USING_FONT_AWESOME_SAMPLE_CODE
+
 append_to_file 'spec/rails_helper.rb', <<-SPEC_UTILITY
 # save screenshot
 def take_screenshot
@@ -164,6 +168,10 @@ feature 'blogs' do
   scenario 'can show blogs', js: true do
     visit blogs_path
     expect(page).to have_content 'Blogs'
+  end
+  scenario 'can using font-awesome-rails', js: true do
+    visit blogs_path
+    expect(page).to have_css '.fa.fa-twitter'
   end
   scenario 'can create blogs', js: true do
     visit blogs_path
