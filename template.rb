@@ -54,6 +54,13 @@ run 'bundle exec guard init rspec'
 rails_command 'generate bootstrap:install'
 rails_command 'generate bootstrap:layout application fluid -f'
 
+# XXX: avoid reference error cause generated layout refs files below
+file 'app/assets/images/apple-touch-icon-144x144-precomposed.png'
+file 'app/assets/images/apple-touch-icon-114x114-precomposed.png'
+file 'app/assets/images/apple-touch-icon-72x72-precomposed.png'
+file 'app/assets/images/apple-touch-icon-precomposed.png'
+file 'app/assets/images/favicon.ico'
+
 # set confing/application.rb
 application do
   %(# generators settings
