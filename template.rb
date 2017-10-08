@@ -36,6 +36,7 @@ gem_group :test do
   gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'timecop'
+  gem 'codecov', require: false, group: :test
 end
 
 run 'bundle install'
@@ -165,6 +166,18 @@ end
 
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
   "  config.include FactoryGirl::Syntax::Methods\n"
+end
+
+insert_into_file 'spec/spec_helper.rb', before: "RSpec.configure do |config|\n" do
+  <<-SETTING_FOR_CODECOV
+  require 'simplecov'
+  SimpleCov.start
+
+  if ENV['CI'] == 'true'
+    require 'codecov'
+    SimpleCov.formatter = SimpleCov::Formatter::Codecov
+  end
+  SETTING_FOR_CODECOV
 end
 
 append_to_file 'app/assets/stylesheets/application.css', <<-SETTING_FONT_AWESOME_RAILS
