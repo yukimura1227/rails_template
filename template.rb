@@ -33,7 +33,7 @@ end
 gem_group :test do
   gem 'faker'
   gem 'capybara'
-  gem 'selenium-webdriver'
+  gem 'poltergeist'
   gem 'database_cleaner'
   gem 'timecop'
   gem 'codecov', require: false, group: :test
@@ -145,23 +145,11 @@ insert_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
-  "require 'selenium-webdriver'\n"
+  "require 'capybara/poltergeist'\n"
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
-  <<-SETTING_FOR_HEADLESS_CHROME
-  Capybara.register_driver :selenium do |app|
-    Capybara::Selenium::Driver.new(app,
-      browser: :chrome,
-      desired_capabilities: Selenium::WebDriver::Remote::Capabilities.chrome(
-        chrome_options: {
-          args: %w(headless disable-gpu window-size=1680,1050),
-        },
-      )
-    )
-  end
-  Capybara.javascript_driver = :selenium
-  SETTING_FOR_HEADLESS_CHROME
+  "  Capybara.javascript_driver = :poltergeist\n"
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
