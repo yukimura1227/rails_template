@@ -94,6 +94,7 @@ rails_command 'db:migrate'
 
 rails_command 'generate bootstrap:themed blogs -f'
 
+gsub_file 'Gemfile', 'sqlite3', 'pg'
 gsub_file 'spec/rails_helper.rb', 'config.use_transactional_fixtures = true', 'config.use_transactional_fixtures = false'
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
   %(  # setting for database_cleaner
