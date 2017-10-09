@@ -149,7 +149,12 @@ insert_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
-  "  Capybara.javascript_driver = :poltergeist\n"
+  <<-SETTING_FOR_POLTERGEIST
+  Capybara.javascript_driver = :poltergeist
+  Capybara.register_driver :poltergeist do |app|
+    Capybara::Poltergeist::Driver.new(app, :js_errors => false, :timeout => 60)
+  end
+  SETTING_FOR_POLTERGEIST
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
