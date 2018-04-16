@@ -16,7 +16,7 @@ gem_group :development, :test do
   gem 'awesome_print'
   gem 'rspec-rails'
   gem 'rails-controller-testing'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'guard-rspec', require: false
 end
 
@@ -72,7 +72,7 @@ application do
       routing_specs: false,
       controller_specs: true,
       request_specs: false
-      g.fixture_replacement :factory_girl, dir: 'spec/factories'
+      g.fixture_replacement :factory_bot, dir: 'spec/factories'
     end)
 end
 
@@ -164,7 +164,7 @@ insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" 
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
-  "  config.include FactoryGirl::Syntax::Methods\n"
+  "  config.include FactoryBot::Syntax::Methods\n"
 end
 
 append_to_file 'app/assets/stylesheets/application.css', <<-SETTING_FONT_AWESOME_RAILS
