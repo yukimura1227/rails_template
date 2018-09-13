@@ -33,9 +33,10 @@ end
 gem_group :test do
   gem 'faker'
   gem 'capybara'
-  gem 'selenium-webdriver'
+  gem 'poltergeist'
   gem 'database_cleaner'
   gem 'timecop'
+  gem 'codecov', require: false, group: :test
 end
 
 run 'bundle install'
@@ -93,6 +94,7 @@ rails_command 'db:migrate'
 
 rails_command 'generate bootstrap:themed blogs -f'
 
+gsub_file "Gemfile 'sqlite3'", "groups: %w(test development), require: false\n gem 'pg', groups: %w(production), require: false"
 gsub_file 'spec/rails_helper.rb', 'config.use_transactional_fixtures = true', 'config.use_transactional_fixtures = false'
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
   %(  # setting for database_cleaner
@@ -144,27 +146,32 @@ insert_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
-  "require 'selenium-webdriver'\n"
+  "require 'capybara/poltergeist'\n"
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
-  <<-SETTING_FOR_HEADLESS_CHROME
-  Capybara.register_driver :selenium do |app|
-    Capybara::Selenium::Driver.new(app,
-      browser: :chrome,
-      desired_capabilities: Selenium::WebDriver::Remote::Capabilities.chrome(
-        chrome_options: {
-          args: %w(headless disable-gpu window-size=1680,1050),
-        },
-      )
-    )
+  <<-SETTING_FOR_POLTERGEIST
+  Capybara.javascript_driver = :poltergeist
+  Capybara.register_driver :poltergeist do |app|
+    Capybara::Poltergeist::Driver.new(app, :js_errors => false, :timeout => 60)
   end
-  Capybara.javascript_driver = :selenium
-  SETTING_FOR_HEADLESS_CHROME
+  SETTING_FOR_POLTERGEIST
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
   "  config.include FactoryBot::Syntax::Methods\n"
+end
+
+insert_into_file 'spec/spec_helper.rb', before: "RSpec.configure do |config|\n" do
+  <<-SETTING_FOR_CODECOV
+  require 'simplecov'
+  SimpleCov.start
+
+  if ENV['CI'] == 'true'
+    require 'codecov'
+    SimpleCov.formatter = SimpleCov::Formatter::Codecov
+  end
+  SETTING_FOR_CODECOV
 end
 
 append_to_file 'app/assets/stylesheets/application.css', <<-SETTING_FONT_AWESOME_RAILS
