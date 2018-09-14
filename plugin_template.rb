@@ -1,42 +1,72 @@
-gem 'haml-rails'
+gems = {
+  'haml-rails': {},
+  'therubyracer': {},
+  'less-rails': { git: 'https://github.com/MustafaZain/less-rails' }, # avoid duprecation error see https://github.com/metaskills/less-rails/issues/122
+  'twitter-bootstrap-rails': {},
+  'draper': { version: '>= 3.0.0.pre1' }, # 3.0.0.pre1 is avoid error -> active_model/serializers/xml (LoadError)
+  'font-awesome-rails': {},
+}.freeze
 
-gem 'therubyracer'
-gem 'less-rails', git: 'https://github.com/MustafaZain/less-rails' # avoid duprecation error see https://github.com/metaskills/less-rails/issues/122
-gem 'twitter-bootstrap-rails'
+dev_test_gems = {
+  'pry-rails': {},
+  'pry-doc': {},
+  'pry-byebug': {},
+  'better_errors': {},
+  'binding_of_caller': {},
+  'awesome_print': {},
+  'rspec-rails': {},
+  'rails-controller-testing': {},
+  'factory_bot_rails': {},
+  'guard-rspec': {require: false},
+}.freeze
 
-gem 'draper', '>= 3.0.0.pre1' # 3.0.0.pre1 is avoid error -> active_model/serializers/xml (LoadError)
-gem 'font-awesome-rails'
+dev_gems = {
+  'erb2haml': {},
+  'hirb': {},         # モデルの出力結果を表形式で表示するGem
+  'hirb-unicode': {}, # 日本語などマルチバイト文字の出力時の出力結果のずれに対応
+  'pry-coolline': {},
+  'rubocop': {require: false},
+  'view_source_map': {},
+  'bullet': {},
+}.freeze
+
+test_gems = {
+  'faker': {},
+  'capybara': {},
+  'poltergeist': {},
+  'database_cleaner': {},
+  'timecop': {},
+  'codecov': {require: false},
+}.freeze
+
+gems.each do |gem_name, options|
+  version = options[:version]
+  options.delete(:version) if version
+  gem gem_name.to_s, version, options
+end
 
 gem_group :development, :test do
-  gem 'pry-rails'
-  gem 'pry-doc'
-  gem 'pry-byebug'
-  gem 'better_errors'
-  gem 'binding_of_caller'
-  gem 'awesome_print'
-  gem 'rspec-rails'
-  gem 'rails-controller-testing'
-  gem 'factory_bot_rails'
-  gem 'guard-rspec', require: false
+  dev_test_gems.each do |gem_name, options|
+    version = options[:version]
+    options.delete(:version) if version
+    gem gem_name.to_s, version, options
+  end
 end
 
 gem_group :development do
-  gem 'erb2haml'
-  gem 'hirb'         # モデルの出力結果を表形式で表示するGem
-  gem 'hirb-unicode' # 日本語などマルチバイト文字の出力時の出力結果のずれに対応
-  gem 'pry-coolline'
-  gem 'rubocop', require: false
-  gem 'view_source_map'
-  gem 'bullet'
+  dev_gems.each do |gem_name, options|
+    version = options[:version]
+    options.delete(:version) if version
+    gem gem_name.to_s, version, options
+  end
 end
 
 gem_group :test do
-  gem 'faker'
-  gem 'capybara'
-  gem 'poltergeist'
-  gem 'database_cleaner'
-  gem 'timecop'
-  gem 'codecov', require: false, group: :test
+  test_gems.each do |gem_name, options|
+    version = options[:version]
+    options.delete(:version) if version
+    gem gem_name.to_s, options
+  end
 end
 
 def plugin?
