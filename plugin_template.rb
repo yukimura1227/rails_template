@@ -60,8 +60,9 @@ def append_dependencies(gems, for_dev = false)
     unless plugin?
       gem gem_name.to_s, version, options
     else
-      inject_into_file "#{@lib_name}.gemspec", after: "s.add_development_dependency \"sqlite3\"\n" do <<-'RUBY'
-        s.add_#{ for_dev ? 'develpment_' : '' }dependency "'#{gem_name}'"
+      inject_into_file "#{@lib_name}.gemspec", after: "s.add_development_dependency \"sqlite3\"\n" do
+      <<~"RUBY"
+      \s\ss.add_#{ for_dev ? 'development_' : '' }dependency '#{gem_name}'
       RUBY
       end
     end
