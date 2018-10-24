@@ -60,6 +60,7 @@ def append_dependencies(gems, for_dev = false)
     unless plugin?
       gem gem_name.to_s, version, options
     else
+      next if gem_name == :codecov # TODO: pluginだとloadエラーになるので、要原因調査
       inject_into_file "#{@lib_name}.gemspec", after: "s.add_development_dependency \"sqlite3\"\n" do
       <<~"RUBY"
       \s\ss.add_#{ for_dev ? 'development_' : '' }dependency '#{gem_name}'
@@ -222,16 +223,19 @@ insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" 
   "  config.include FactoryBot::Syntax::Methods\n"
 end
 
-insert_into_file 'spec/spec_helper.rb', before: "RSpec.configure do |config|\n" do
-  <<-SETTING_FOR_CODECOV
-  require 'simplecov'
-  SimpleCov.start
+# TODO: pluginだとsimplecovがloadエラーになるので、要原因調査
+unless plugin?
+  insert_into_file 'spec/spec_helper.rb', before: "RSpec.configure do |config|\n" do
+    <<-SETTING_FOR_CODECOV
+    require 'simplecov'
+    SimpleCov.start
 
-  if ENV['CI'] == 'true'
-    require 'codecov'
-    SimpleCov.formatter = SimpleCov::Formatter::Codecov
+    if ENV['CI'] == 'true'
+      require 'codecov'
+      SimpleCov.formatter = SimpleCov::Formatter::Codecov
+    end
+    SETTING_FOR_CODECOV
   end
-  SETTING_FOR_CODECOV
 end
 
 append_to_file 'app/assets/stylesheets/application.css', <<-SETTING_FONT_AWESOME_RAILS
