@@ -39,36 +39,6 @@ test_gems = {
   'codecov': {require: false},
 }.freeze
 
-gems.each do |gem_name, options|
-  version = options[:version]
-  options.delete(:version) if version
-  gem gem_name.to_s, version, options
-end
-
-gem_group :development, :test do
-  dev_test_gems.each do |gem_name, options|
-    version = options[:version]
-    options.delete(:version) if version
-    gem gem_name.to_s, version, options
-  end
-end
-
-gem_group :development do
-  dev_gems.each do |gem_name, options|
-    version = options[:version]
-    options.delete(:version) if version
-    gem gem_name.to_s, version, options
-  end
-end
-
-gem_group :test do
-  test_gems.each do |gem_name, options|
-    version = options[:version]
-    options.delete(:version) if version
-    gem gem_name.to_s, options
-  end
-end
-
 def plugin?
   unless @yes_or_no
     @yes_or_no = ask('Is This a Plugin?[y/n]')
@@ -81,6 +51,35 @@ if plugin?
   @lib_name = self.name
   gsub_file "#{@lib_name}.gemspec", /(homepage\s*=\s*)(.*)/, "\\1'https://example.com'"
   gsub_file "#{@lib_name}.gemspec", 'TODO', 'XXXX'
+end
+
+def append_dependencies(gems, for_dev = false)
+  gems.each do |gem_name, options|
+    version = options[:version]
+    options.delete(:version) if version
+    unless plugin?
+      gem gem_name.to_s, version, options
+    else
+      inject_into_file "#{@lib_name}.gemspec", after: "s.add_development_dependency \"sqlite3\"\n" do <<-'RUBY'
+        s.add_#{ for_dev ? 'develpment_' : '' }dependency "'#{gem_name}'"
+      RUBY
+      end
+    end
+  end
+end
+
+append_dependencies(gems)
+
+gem_group :development, :test do
+  append_dependencies(dev_test_gems, true)
+end
+
+gem_group :development do
+  append_dependencies(dev_gems, true)
+end
+
+gem_group :test do
+  append_dependencies(test_gems, true)
 end
 
 run 'bundle install'
