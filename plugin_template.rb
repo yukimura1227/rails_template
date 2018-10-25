@@ -262,7 +262,7 @@ unless plugin?
   end
 end
 
-append_to_file 'app/assets/stylesheets/application.css', <<-SETTING_FONT_AWESOME_RAILS
+append_to_file "app/assets/stylesheets/#{plugin? ? @lib_name + '/' : '' }application.css", <<-SETTING_FONT_AWESOME_RAILS
 /*
  *= require font-awesome
  */
