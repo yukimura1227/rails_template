@@ -61,6 +61,7 @@ def append_dependencies(gems, for_dev = false)
       gem gem_name.to_s, version, options
     else
       next if gem_name == :codecov # TODO: pluginだとloadエラーになるので、要原因調査
+      next if gem_name == :'twitter-bootstrap-rails' # NOTE: engineではhamlを使えないため
       inject_into_file "#{@lib_name}.gemspec", after: "s.add_development_dependency \"sqlite3\"\n" do
       <<~"RUBY"
       \s\ss.add_#{ for_dev ? 'development_' : '' }dependency '#{gem_name}'
@@ -119,8 +120,12 @@ end
 
 run 'bundle exec guard init rspec'
 
-rails_command 'generate bootstrap:install'
-rails_command 'generate bootstrap:layout application fluid -f'
+# NOTE: twitter-bootstrapのgeneratorが、engineだとerbを生成してしまうので、このgemは使わない
+# (gem側では、::Rails.application.config.generators.options[:rails][:template_engine]を見ているため)
+unless plugin?
+  rails_command 'generate bootstrap:install'
+  rails_command 'generate bootstrap:layout application fluid -f'
+end
 
 # XXX: avoid reference error cause generated layout refs files below
 inside '' do
@@ -168,7 +173,11 @@ generate(:scaffold, 'blog', 'title:string', 'content:text')
 generate(:scaffold, 'comment', 'content:text', 'blog:references')
 rails_command 'db:migrate'
 
-rails_command "generate bootstrap:themed #{ plugin? ? @lib_name + '/'  : '' }blogs -f"
+# NOTE: twitter-bootstrapのgeneratorが、engineだとerbを生成してしまうので、このgemは使わない
+# (gem側では、::Rails.application.config.generators.options[:rails][:template_engine]を見ているため)
+unless plugin?
+  rails_command "generate bootstrap:themed #{ plugin? ? @lib_name + '/'  : '' }blogs -f"
+end
 
 gsub_file "Gemfile", "'sqlite3' groups: %w(test development), require: false\ngem 'pg', groups: %w(production), require: false"
 gsub_file 'spec/rails_helper.rb', 'config.use_transactional_fixtures = true', 'config.use_transactional_fixtures = false'
