@@ -88,6 +88,21 @@ run 'bundle install'
 
 rails_command "#{plugin? ? 'app:' : ''}haml:replace_erbs"
 
+if plugin?
+  insert_into_file "lib/#{@lib_name}/engine.rb", after: /isolate_namespace.*/ do
+        # isolate_namespace Hoge
+
+    <<~"RUBY"
+    \n
+        config.generators do |g|
+          g.template_engine :haml
+          g.test_framework = 'rspec'
+        end
+    RUBY
+
+  end
+end
+
 rails_command 'generate rspec:install'
 append_to_file '.rspec', <<-CODE
   --format documentation
