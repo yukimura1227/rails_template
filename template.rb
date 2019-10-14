@@ -39,6 +39,8 @@ end
 
 run 'bundle install'
 
+run 'bundle binstubs bundler'
+
 rails_command 'haml:replace_erbs'
 
 rails_command 'generate rspec:install'
