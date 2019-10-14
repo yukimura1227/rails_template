@@ -185,6 +185,14 @@ append_to_file 'spec/rails_helper.rb', <<-SPEC_UTILITY
 def take_screenshot
   page.save_screenshot "tmp/capybara/screenshot-\#{DateTime.now}.png"
 end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
 SPEC_UTILITY
 
 file 'spec/features/timecop_sample_spec.rb', <<-TIMECOP_SAMPLE_SPEC
