@@ -1,6 +1,6 @@
 gem 'haml-rails'
 
-gem 'therubyracer'
+gem 'mini_racer'
 gem 'less-rails', git: 'https://github.com/MustafaZain/less-rails' # avoid duprecation error see https://github.com/metaskills/less-rails/issues/122
 gem 'twitter-bootstrap-rails'
 
