@@ -6,36 +6,36 @@ gem 'draper', '>= 3.0.0.pre1' # 3.0.0.pre1 is avoid error -> active_model/serial
 gem 'font-awesome-rails'
 
 gem_group :development, :test do
-  gem 'pry-rails'
-  gem 'pry-doc'
-  gem 'pry-byebug'
+  gem 'awesome_print'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'awesome_print'
-  gem 'rspec-rails'
-  gem 'rails-controller-testing'
   gem 'factory_bot_rails'
   gem 'guard-rspec', require: false
+  gem 'pry-byebug'
+  gem 'pry-doc'
+  gem 'pry-rails'
+  gem 'rails-controller-testing'
+  gem 'rspec-rails'
 end
 
 gem_group :development do
+  gem 'bullet'
   gem 'erb2haml'
   gem 'hirb'         # モデルの出力結果を表形式で表示するGem
   gem 'hirb-unicode' # 日本語などマルチバイト文字の出力時の出力結果のずれに対応
   gem 'pry-coolline'
   gem 'rubocop', require: false
   gem 'view_source_map'
-  gem 'bullet'
 end
 
 gem_group :test do
-  gem 'faker'
   gem 'capybara'
-  gem 'poltergeist'
-  gem 'database_cleaner'
-  gem 'timecop'
   gem 'codecov', require: false, group: :test
+  gem 'database_cleaner'
+  gem 'faker'
+  gem 'poltergeist'
   gem 'shoulda-matchers'
+  gem 'timecop'
 end
 
 run 'bundle install'
