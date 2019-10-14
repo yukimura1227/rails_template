@@ -39,7 +39,7 @@ end
 
 run 'bundle install'
 
-run 'bundle binstubs bundler'
+run 'bundle binstubs bundler  --force'
 
 rails_command 'haml:replace_erbs'
 
