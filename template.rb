@@ -1,8 +1,6 @@
 gem 'haml-rails'
 
 gem 'mini_racer'
-gem 'less-rails', git: 'https://github.com/MustafaZain/less-rails' # avoid duprecation error see https://github.com/metaskills/less-rails/issues/122
-gem 'twitter-bootstrap-rails'
 
 gem 'draper', '>= 3.0.0.pre1' # 3.0.0.pre1 is avoid error -> active_model/serializers/xml (LoadError)
 gem 'font-awesome-rails'
@@ -52,9 +50,6 @@ CODE
 
 run 'bundle exec guard init rspec'
 
-rails_command 'generate bootstrap:install'
-rails_command 'generate bootstrap:layout application fluid -f'
-
 # XXX: avoid reference error cause generated layout refs files below
 file 'app/assets/images/apple-touch-icon-144x144-precomposed.png'
 file 'app/assets/images/apple-touch-icon-114x114-precomposed.png'
@@ -91,8 +86,6 @@ end
 generate(:scaffold, 'blog', 'title:string', 'content:text')
 generate(:scaffold, 'comment', 'content:text', 'blog:references')
 rails_command 'db:migrate'
-
-rails_command 'generate bootstrap:themed blogs -f'
 
 gsub_file "Gemfile", "'sqlite3' groups: %w(test development), require: false\ngem 'pg', groups: %w(production), require: false"
 gsub_file 'spec/rails_helper.rb', 'config.use_transactional_fixtures = true', 'config.use_transactional_fixtures = false'
