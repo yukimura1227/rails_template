@@ -92,7 +92,6 @@ group :test do
   gem 'codecov', require: false, group: :test
   gem 'database_cleaner'
   gem 'faker'
-  gem 'poltergeist'
   gem 'shoulda-matchers'
   gem 'timecop'
 end
