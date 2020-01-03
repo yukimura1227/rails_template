@@ -33,7 +33,6 @@ gem_group :test do
   gem 'codecov', require: false, group: :test
   gem 'database_cleaner'
   gem 'faker'
-  gem 'poltergeist'
   gem 'shoulda-matchers'
   gem 'timecop'
 end
@@ -138,20 +137,22 @@ insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" 
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
-  "require 'capybara/rspec'\n"
-end
-
-insert_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
-  "require 'capybara/poltergeist'\n"
+  <<-SETTING_FOR_DEPENDENCY
+require 'capybara/rspec'
+require 'selenium-webdriver'
+  SETTING_FOR_DEPENDENCY
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
-  <<-SETTING_FOR_POLTERGEIST
-  Capybara.javascript_driver = :poltergeist
-  Capybara.register_driver :poltergeist do |app|
-    Capybara::Poltergeist::Driver.new(app, :js_errors => false, :timeout => 60)
+  <<-SETTING_FOR_JAVASCRIPT_DRIVER
+  Capybara.javascript_driver = :selenium_chrome_headless
+  Capybara.register_driver :selenium_chrome_headless do |app|
+    browser_options = ::Selenium::WebDriver::Chrome::Options.new
+    browser_options.args << '--headless'
+    browser_options.args << '--disable-gpu'
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
   end
-  SETTING_FOR_POLTERGEIST
+  SETTING_FOR_JAVASCRIPT_DRIVER
 end
 
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
