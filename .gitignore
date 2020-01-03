@@ -30,4 +30,7 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
+# custom start
 /coverage
+/docker/mysql/data/*
+# custom end
