@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/yukimura1227/rails_template.svg?branch=master)](https://travis-ci.org/yukimura1227/rails_template)
 # README
 
 This README would normally document whatever steps are necessary to get the
