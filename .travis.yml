@@ -1,0 +1,8 @@
+language: ruby
+cache: bundler
+addons:
+  chrome: stable
+  apt:
+    packages:
+      - chromium-chromedriver
+

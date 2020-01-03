@@ -294,4 +294,14 @@ if defined? Hirb
 end
 FOR_HIRB
 
+append_to_file '.travis.yml', <<-FOR_TRAVIS_CI
+language: ruby
+cache: bundler
+addons:
+  chrome: stable
+  apt:
+    packages:
+      - chromium-chromedriver
+FOR_TRAVIS_CI
+
 # TODO: mailcatcher
