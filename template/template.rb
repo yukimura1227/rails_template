@@ -304,6 +304,26 @@ addons:
   apt:
     packages:
       - chromium-chromedriver
+services:
+  - mysql
+before_script:
+  - cp config/database.travis.yml config/database.yml
+  - bundle exec rake db:create
+  - bundle exec rake db:migrate
 FOR_TRAVIS_CI
+
+append_to_file 'config/database.travis.yml', <<-FOR_TRAVIS_CI_DATABASE
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: root
+  password:
+  host: 127.0.0.1
+
+test:
+  <<: *default
+  database: rails_template_test
+FOR_TRAVIS_CI_DATABASE
 
 # TODO: mailcatcher
