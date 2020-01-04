@@ -87,9 +87,11 @@ end
 
 generate(:scaffold, 'blog', 'title:string', 'content:text')
 generate(:scaffold, 'comment', 'content:text', 'blog:references')
+
+gsub_file 'config/database.yml', "password:\n", "password: root\n"
+gsub_file 'config/database.yml', 'localhost', '127.0.0.1'
 rails_command 'db:migrate'
 
-gsub_file 'Gemfile', "'sqlite3' groups: %w(test development), require: false\ngem 'pg', groups: %w(production), require: false"
 gsub_file 'spec/rails_helper.rb', 'config.use_transactional_fixtures = true', 'config.use_transactional_fixtures = false'
 insert_into_file 'spec/rails_helper.rb', after: "RSpec.configure do |config|\n" do
   %(  # setting for database_cleaner
