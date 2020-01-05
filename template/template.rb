@@ -312,6 +312,7 @@ before_script:
   - bundle exec rake db:migrate
 FOR_TRAVIS_CI
 
+run 'rm config/database.travis.yml; touch config/database.travis.yml'
 append_to_file 'config/database.travis.yml', <<-FOR_TRAVIS_CI_DATABASE
 default: &default
   adapter: mysql2
