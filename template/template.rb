@@ -327,4 +327,8 @@ test:
   database: rails_template_test
 FOR_TRAVIS_CI_DATABASE
 
+# NOTE: rails new -m template.rb --webpack した場合、下記webpacker:install:vueが評価されたあとに
+# webpackerの初期化処理が入るようで、vue部分が消えるのでtemplate.rbでは表現できない
+# rails_command 'webpacker:install:vue'
+
 # TODO: mailcatcher
