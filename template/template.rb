@@ -23,7 +23,7 @@ gem_group :development do
   gem 'erb2haml'
   gem 'hirb'         # モデルの出力結果を表形式で表示するGem
   gem 'hirb-unicode' # 日本語などマルチバイト文字の出力時の出力結果のずれに対応
-  gem 'pry-coolline'
+  gem 'pry-coolline', github: 'owst/pry-coolline', branch: 'support_new_pry_config_api' # ref: https://github.com/pry/pry-coolline/issues/36
   gem 'rubocop', require: false
   gem 'view_source_map'
 end
